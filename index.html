@@ -1,0 +1,254 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale-1.0">
+  <title>ACTION HEROES: THE RPG!</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom scrollbar for webkit browsers */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #333; /* Dark track */
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #f97316; /* Orange thumb */
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ea580c; /* Darker orange on hover */
+    }
+    body {
+      font-family: 'Arial', sans-serif; /* Fallback font */
+    }
+    .font-action {
+      font-family: 'Impact', 'Arial Black', Haettenschweiler, 'Arial Narrow Bold', sans-serif; /* Example action font stack */
+    }
+
+    /* General Print Styles */
+    @media print {
+      body {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        margin: 0;
+        padding: 0;
+        font-size: 10pt; /* Adjust base font size for print */
+      }
+      /* Hide elements not meant for printing */
+      .no-print, nav, footer .animate-marquee, footer img[src^="https://picsum.photos"], #root > div > button[aria-label="Scroll to top"] {
+        display: none !important;
+      }
+      /* Ensure collapsible sections are open for printing if desired by user (manual for now) */
+      /* Or, if you want to force them open:
+      details, .collapsible-content { display: block !important; }
+      details summary { display: none !important; } */
+
+      /* Universal link styling for print */
+      a {
+        color: #000 !important; /* Default to black for links */
+        text-decoration: underline !important;
+      }
+      /* Ensure sections take full width and have some padding */
+      section {
+        page-break-inside: avoid;
+        margin: 0 0 10px 0 !important; /* Minimal margin for print */
+        padding: 10px !important; /* Minimal padding */
+        border: 1px solid #ccc !important; /* Simple border for sections */
+      }
+      h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid;
+        color: #000 !important; /* Ensure headings are black */
+      }
+      table {
+        width: 100% !important;
+        page-break-inside: auto;
+      }
+      tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+      thead {
+        display: table-header-group; /* Ensures headers repeat on new pages */
+      }
+      .prose {
+        color: #000 !important;
+      }
+      .prose strong {
+         color: #000 !important;
+      }
+       .prose code {
+        background-color: #f0f0f0 !important;
+        color: #333 !important;
+        border: 1px solid #ddd !important;
+      }
+      /* Character Sheet Specific Print */
+      .printable-character-sheet {
+        margin: 0 auto !important; /* Center sheet on page */
+        padding: 15px !important;
+        border: 1px solid #000 !important;
+        color: #000 !important;
+        background-color: #fff !important;
+        max-width: 95% !important; /* Ensure it fits well */
+        box-shadow: none !important;
+      }
+      .printable-character-sheet .print-only { display: block !important; }
+      .printable-character-sheet input, .printable-character-sheet textarea, .printable-character-sheet select {
+        border: 1px solid #666 !important;
+        background-color: #fff !important;
+        color: #000 !important;
+      }
+      .printable-character-sheet p.border-b { /* For static sheet placeholders */
+        border-bottom: 1px solid #000 !important;
+      }
+    }
+
+    /* Full Visuals PDF Mode */
+    @media print {
+      body.print-full-visuals-active {
+        /* Allows background colors and images */
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      body.print-full-visuals-active, body.print-full-visuals-active .dark {
+        background-color: #111827 !important; /* Match dark theme bg */
+        color: #e5e7eb !important; /* Match dark theme text */
+      }
+      body.print-full-visuals-active .bg-gray-800\/50 { background-color: rgba(31, 41, 55, 0.5) !important; }
+      body.print-full-visuals-active .dark\:bg-black\/30 { background-color: rgba(0,0,0,0.3) !important; }
+      body.print-full-visuals-active .border-orange-500 { border-color: #f97316 !important; }
+      body.print-full-visuals-active .text-orange-500 { color: #f97316 !important; }
+      body.print-full-visuals-active .text-orange-400 { color: #fb923c !important; }
+      body.print-full-visuals-active .text-yellow-400 { color: #facc15 !important; }
+      body.print-full-visuals-active .text-yellow-500 { color: #eab308 !important; }
+      body.print-full-visuals-active .text-red-500 { color: #ef4444 !important; }
+      body.print-full-visuals-active .text-gray-400 { color: #9ca3af !important; }
+      body.print-full-visuals-active .dark\:text-gray-600 { color: #4b5563 !important; }
+      body.print-full-visuals-active .prose-invert { color: #d1d5db !important; } /* Tailwind prose invert color */
+      body.print-full-visuals-active .prose-headings\:text-orange-400 h2,
+      body.print-full-visuals-active .prose-headings\:text-orange-400 h3,
+      body.print-full-visuals-active .prose-headings\:text-orange-400 h4 {
+          color: #fb923c !important;
+      }
+      body.print-full-visuals-active .classified-document-style {
+        background-color: #fef3c7 !important; /* amber-50 */
+        color: #1f2937 !important; /* gray-800 */
+        border-color: #6b7280 !important; /* gray-500 */
+      }
+      body.print-full-visuals-active .dark .classified-document-style {
+        background-color: #374151 !important; /* dark:bg-gray-700 */
+        color: #d1d5db !important; /* dark:text-gray-200 */
+        border-color: #9ca3af !important; /* dark:border-gray-400 */
+      }
+      body.print-full-visuals-active table thead {
+        background-color: #e5e7eb !important; /* gray-200 */
+      }
+      body.print-full-visuals-active .dark table thead {
+         background-color: #4b5563 !important; /* dark:bg-gray-600 */
+      }
+      body.print-full-visuals-active .explosion-meter-icon { /* Keep colors for explosion icons */ }
+      /* Film strip SVG background needs to be forced if it's crucial. The JS already creates SVG data URLs */
+      body.print-full-visuals-active .decorative-film-strip-border > div {
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='20' viewBox='0 0 80 20'%3E%3Crect width='80' height='20' fill='%231f2937'/%3E%3Crect x='5' y='3' width='4' height='14' fill='%23f97316'/%3E%3Crect x='15' y='3' width='4' height='14' fill='%23f97316'/%3E%3Crect x='25' y='3' width='4' height='14' fill='%23f97316'/%3E%3Crect x='35' y='3' width='4' height='14' fill='%23f97316'/%3E%3Crect x='45' y='3' width='4' height='14' fill='%23f97316'/%3E%3Crect x='55' y='3' width='4' height='14' fill='%23f97316'/%3E%3Crect x='65' y='3' width='4' height='14' fill='%23f97316'/%3E%3Crect x='75' y='3' width='4' height='14' fill='%23f97316'/%3E%3C/svg%3E") !important;
+          display: block !important; /* Ensure visibility */
+          height: 20px !important; /* Ensure height */
+      }
+    }
+
+    /* Ink Saver PDF Mode */
+    @media print {
+      body.print-ink-saver-active {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+      }
+      body.print-ink-saver-active * {
+        background-color: transparent !important;
+        color: #000000 !important;
+        border-color: #aaaaaa !important; /* Lighter borders */
+        box-shadow: none !important;
+      }
+      body.print-ink-saver-active .prose {
+          color: #000 !important;
+      }
+      body.print-ink-saver-active .prose strong,
+      body.print-ink-saver-active .prose h1,
+      body.print-ink-saver-active .prose h2,
+      body.print-ink-saver-active .prose h3,
+      body.print-ink-saver-active .prose h4 {
+        color: #000 !important;
+      }
+      body.print-ink-saver-active .text-orange-500, 
+      body.print-ink-saver-active .text-orange-400,
+      body.print-ink-saver-active .text-yellow-400,
+      body.print-ink-saver-active .text-yellow-500,
+      body.print-ink-saver-active .text-red-500,
+      body.print-ink-saver-active .text-green-400,
+      body.print-ink-saver-active .text-green-600,
+      body.print-ink-saver-active .text-red-700,
+      body.print-ink-saver-active .text-red-400,
+      body.print-ink-saver-active .text-orange-600,
+      body.print-ink-saver-active .dark\:text-yellow-400 {
+        color: #000000 !important; /* All accent colors to black */
+      }
+      body.print-ink-saver-active .classified-document-style,
+      body.print-ink-saver-active .bg-amber-50,
+      body.print-ink-saver-active .dark\:bg-gray-700,
+      body.print-ink-saver-active .bg-gray-200,
+      body.print-ink-saver-active .dark\:bg-gray-600,
+      body.print-ink-saver-active .dark\:bg-gray-800\/60,
+      body.print-ink-saver-active .dark\:bg-black\/50,
+      body.print-ink-saver-active .bg-gray-700\/70,
+      body.print-ink-saver-active .dark\:bg-gray-700\/70 {
+        background-color: #ffffff !important;
+        border: 1px solid #ccc !important;
+      }
+      body.print-ink-saver-active .decorative-bullet-hole,
+      body.print-ink-saver-active .decorative-film-strip-border,
+      body.print-ink-saver-active .crime-scene-tape-pattern, /* Assuming you add this class if needed */
+      body.print-ink-saver-active .film-strip-icon { /* Example if you had a component for film strip icons */
+        display: none !important;
+      }
+      body.print-ink-saver-active .explosion-meter-icon {
+        filter: grayscale(100%); /* Make explosion icons monochrome */
+      }
+       body.print-ink-saver-active .border-orange-500, body.print-ink-saver-active .border-2 {
+        border-width: 1px !important;
+        border-color: #ccc !important;
+      }
+      body.print-ink-saver-active section {
+        border: 1px solid #ccc !important;
+      }
+      body.print-ink-saver-active table {
+        border: 1px solid #ccc !important;
+      }
+      body.print-ink-saver-active th, body.print-ink-saver-active td {
+        border: 1px solid #ddd !important;
+        padding: 4px !important;
+      }
+      body.print-ink-saver-active thead {
+        background-color: #f0f0f0 !important; /* Light grey for header background */
+      }
+    }
+
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.6.0"
+  }
+}
+</script>
+</head>
+<body class="bg-gray-900 text-gray-100 selection:bg-orange-500 selection:text-white">
+  <div id="root"></div>
+  <script type="module" src="js/index.js"></script>
+</body>
+</html>
+<link rel="stylesheet" href="index.css">
+<script src="index.tsx" type="module"></script>
